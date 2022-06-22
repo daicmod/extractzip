@@ -62,11 +62,11 @@ func ExtractFrom7z(target, src, dest string) error {
 			if err != nil {
 				return err
 			}
-			defer rc.Close()
 
 			if _, err := io.Copy(out, rc); err != nil {
 				return err
 			}
+			rc.Close()
 
 			break
 		}
