@@ -79,10 +79,6 @@ func ExtractFrom7z(target, src, dest string) error {
 
 func ExtractFromTar(target, src, dest string) error {
 	destFile := filepath.Join(dest, target)
-	w, err := os.Create(destFile)
-	if err != nil {
-		return err
-	}
 
 	file, _ := os.Open(src)
 	defer file.Close()
@@ -97,7 +93,14 @@ func ExtractFromTar(target, src, dest string) error {
 			break
 		}
 		if f.Name == target {
+			w, err := os.Create(destFile)
+			if err != nil {
+				return err
+			}
+
 			_, err = io.Copy(w, r)
+			w.Close()
+
 			if err != nil {
 				return err
 			}
